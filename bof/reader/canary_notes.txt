@@ -1,0 +1,8 @@
+canary1: 0x9cd250ee5e6ef900
+canary2: 0x77466ec1cf7cfd00
+
+canary changes every time we start the program. But we can brute force it since it is only 32 bit and the last byte is always 0x00.
+
+Also, they are using fork to spawn a new process every time. Using fork creates a copy of the parent process. This means that the canary will be the same every fork() as long as the parent process is kept alive.
+
+If we send some of the canary right and use 'send()' without the newline we can brute force one byte at a time.
