@@ -1,0 +1,1 @@
+savedcmd_/home/cl1nical/Desktop/cumstomkernel/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/cl1nical/Desktop/cumstomkernel/Module.symvers -T /home/cl1nical/Desktop/cumstomkernel/modules.order -i Module.symvers -e 

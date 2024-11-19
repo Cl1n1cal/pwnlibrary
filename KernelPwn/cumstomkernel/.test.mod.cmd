@@ -1,0 +1,1 @@
+savedcmd_/home/cl1nical/Desktop/cumstomkernel/test.mod := printf '%s\n'   test.o | awk '!x[$$0]++ { print("/home/cl1nical/Desktop/cumstomkernel/"$$0) }' > /home/cl1nical/Desktop/cumstomkernel/test.mod

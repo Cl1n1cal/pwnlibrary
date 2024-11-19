@@ -1,0 +1,16 @@
+[*] '/home/cl1nical/Desktop/pwnlibrary/BlockCtf/Scream/scream'
+    Arch:     amd64-64-little
+    RELRO:    Full RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+[x] Opening connection to 54.85.45.101 on port 8002
+[x] Opening connection to 54.85.45.101 on port 8002: Trying 54.85.45.101
+[+] Opening connection to 54.85.45.101 on port 8002: Done
+b"Hey there! I've got a flag here, and I'm gonna be hiding it somewhere out in the wide, wide, 64 bit memory space.\nI'm feeling generous this CTF, so I'll give you 1 whole syscall that you'll be allowed to use! Go ahead, pick a number!\n"
+b"Ok lets skip all that 'exploitation' business for this one - give me some shellcode to execute!\n"
+[*] Switching to interactive mode
+Good luck!
+[*] Got EOF while reading in interactive
+[*] Interrupted
+[*] Closed connection to 54.85.45.101 port 8002
