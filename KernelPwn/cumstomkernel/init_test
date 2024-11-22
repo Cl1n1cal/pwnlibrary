@@ -22,7 +22,7 @@ chown -R ctf:ctf /home/ctf
 chmod 755 /home/ctf
 chmod 755 /dev
 
-hostname intigriti
+hostname kernelpwn
 
 mount -t sysfs -o nodev,noexec,nosuid sysfs /sys
 mount -t devtmpfs -o nosuid,mode=0755 udev /dev

@@ -1,1 +1,1 @@
-savedcmd_/home/cl1nical/Desktop/cumstomkernel/hackme.mod := printf '%s\n'   hackme.o | awk '!x[$$0]++ { print("/home/cl1nical/Desktop/cumstomkernel/"$$0) }' > /home/cl1nical/Desktop/cumstomkernel/hackme.mod
+savedcmd_/home/cl1nical/Desktop/pwnlibrary/KernelPwn/cumstomkernel/hackme.mod := printf '%s\n'   hackme.o | awk '!x[$$0]++ { print("/home/cl1nical/Desktop/pwnlibrary/KernelPwn/cumstomkernel/"$$0) }' > /home/cl1nical/Desktop/pwnlibrary/KernelPwn/cumstomkernel/hackme.mod

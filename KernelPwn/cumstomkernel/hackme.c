@@ -5,7 +5,7 @@
 #include <linux/slab.h>    // For kmalloc and kfree
 
 #define DEVICE_NAME "hackme"
-#define BUF_SIZE 128
+#define BUF_SIZE 64
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("CTF Creator");
@@ -20,12 +20,21 @@ ssize_t hackme_read(struct file *f, char __user *data, size_t size, loff_t *off)
 ssize_t hackme_write(struct file *f, const char __user *data, size_t size, loff_t *off);
 
 ssize_t hackme_read(struct file *f, char __user *data, size_t size, loff_t *off) {
-    if (size > BUF_SIZE) {
+    unsigned long vulnbuf[8];
+
+    // Just gonna put some values into vulnbuf to make understanding array layout easier
+    size_t vuln_size = sizeof(vulnbuf)/sizeof(unsigned long);
+    for(int i = 0; i < vuln_size; i++) {
+        vulnbuf[i] = i;
+    }
+
+    pr_info("hackme_read\n"); // pr_info is prkern() with info level enabled
+    if (size > 0x1000) { // Intentionally larger than bufsize of 8
         pr_warn("Buffer overflow detected in read! (%lu > %d)\n", size, BUF_SIZE);
         return -EFAULT; // Return failure if size exceeds buffer
     }
 
-    if (copy_to_user(data, hackme_buf, size)) {
+    if (raw_copy_to_user(data, vulnbuf, size)) {
         pr_warn("Failed to copy data to user space\n");
         return -EFAULT;
     }
@@ -35,21 +44,24 @@ ssize_t hackme_read(struct file *f, char __user *data, size_t size, loff_t *off)
 }
 
 ssize_t hackme_write(struct file *f, const char __user *data, size_t size, loff_t *off) {
-    char vulnbuf[8]; // Intentionally small buffer for overflow
-    if (size > BUF_SIZE) {
+    pr_info("hackme_write");
+    unsigned long vulnbuf[8]; // Size: 8*4 = 32 bytes. Intentionally small buffer for overflow
+
+
+    if (size > 0x1000) { // Intentionally larger than the buffer
         pr_warn("Buffer overflow detected in write! (%lu > %d)\n", size, BUF_SIZE);
         return -EFAULT; // Return failure if size exceeds buffer
     }
 
-    if (copy_from_user(hackme_buf, data, size)) {
+    if (raw_copy_from_user(vulnbuf, data, size)) {
         pr_warn("Failed to copy data from user space\n");
         return -EFAULT;
     }
 
     // Vulnerability: Unchecked memory copy
-    memcpy(vulnbuf, hackme_buf, size);
+    //memcpy(vulnbuf, hackme_buf, size);
 
-    pr_info("Data written: %s\n", hackme_buf);
+    //pr_info("Data written: %s\n", hackme_buf);
     return size;
 }
 

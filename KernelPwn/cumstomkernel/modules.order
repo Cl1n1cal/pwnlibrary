@@ -1,1 +1,1 @@
-/home/cl1nical/Desktop/cumstomkernel/hackme.o
+/home/cl1nical/Desktop/pwnlibrary/KernelPwn/cumstomkernel/hackme.o

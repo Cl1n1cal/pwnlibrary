@@ -22,7 +22,7 @@ chown -R ctf:ctf /home/ctf
 chmod 755 /home/ctf
 chmod 755 /dev
 
-hostname intigriti
+hostname kernelpwn
 
 mount -t sysfs -o nodev,noexec,nosuid sysfs /sys
 mount -t devtmpfs -o nosuid,mode=0755 udev /dev
@@ -42,7 +42,7 @@ echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
 echo "[ Hackme - Cl1nical ]"
 
 cd /
-setsid cttyhack setuidgid 0 sh
+setsid cttyhack setuidgid 1337 sh
 
 umount /proc 
 umount /sys
