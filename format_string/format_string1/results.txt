@@ -1,0 +1,7 @@
+[*] '/home/cl1nical/Desktop/pwnlibrary/format_string/format_string1/chall'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+Found rop gadgets

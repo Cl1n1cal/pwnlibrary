@@ -1,0 +1,2 @@
+This is a UAF SSTI challenge so a mix of web and pwn.
+I got the exploit script from ElChals.

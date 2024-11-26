@@ -1,0 +1,11 @@
+[*] '/home/cl1nical/Desktop/pwnlibrary/scripts/chall'
+    Arch:     amd64-64-little
+    RELRO:    Full RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+Found rop gadgets
+0x0000000000001190 : add byte ptr [rbp + rax - 0x18], dh ; pop rax ; idiv edi ; dec ecx ; ret
+0x0000000000001194 : pop rax ; idiv edi ; dec ecx ; ret
+0x0000000000001313 : pop rdi ; ret
+0x0000000000001311 : pop rsi ; pop r15 ; ret

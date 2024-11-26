@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 from pwn import *
 
-elf = context.binary = ELF("format-string-1")
+elf = context.binary = ELF("chall")
 
 gs = '''
-b main
+continue
 '''
 def start():
     if args.GDB:
@@ -14,10 +14,13 @@ def start():
     else:
         return process(elf.path)
 
+# Plan:
+
+# Addresses
+
+# Functions
+
 io = start()
 
-payload = b"%p,"*35
-
-io.sendlineafter(b"Give me your order and I'll read it back to you:\n", payload)
 
 io.interactive()

