@@ -46,9 +46,41 @@ sudo docker cp $container_id:/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 .
 echo "[+] Copying libc"
 sudo docker cp $container_id:/lib/x86_64-linux-gnu/libc.so.6 .
 
-#echo "[+] Setting executable permissions +x"
-#sudo chmod +x libc.so.6
-#sudo chmod +x ld-linux-x86-64.so.2
+# File to check
+libc_path="libc.so.6"
+
+# Check if the file is a symbolic link
+if [ -L "$libc_path" ]; then
+	echo "$libc_path is a symbolic link."
+
+	# Print the target of the symbolic link
+	target=$(readlink "$libc_path")
+	echo "It points to: $target"
+	echo "[+] Copying libc"
+	sudo docker cp $container_id:/lib/x86_64-linux-gnu/$target .
+	rm $libc_path
+else
+  echo "$libc_path is not a symbolic link."
+  target = $libc_path
+fi
+
+# File to check
+ld_path="ld-linux-x86-64.so.2"
+
+# Check if the file is a symbolic link
+if [ -L "$ld_path" ]; then
+	echo "$ld_path is a symbolic link."
+
+	# Print the target of the symbolic link
+	target1=$(readlink "$ld_path")
+	echo "It points to: $target1"
+	echo "[+] Copying libc"
+	sudo docker cp $container_id:/lib/x86_64-linux-gnu/$target1 .
+	rm $ld_path
+else
+  echo "$ld_path is not a symbolic link."
+  target1 = $ld_path
+fi
 
 echo "[+] Running pwninit"
 cp $HOME/misc/pwninit .
