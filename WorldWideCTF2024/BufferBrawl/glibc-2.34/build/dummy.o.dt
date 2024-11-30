@@ -1,0 +1,19 @@
+/home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/glibc-2.34/build/dummy.o: \
+ /home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/glibc-2.34/build/dummy.c \
+ ../include/stdc-predef.h \
+ /home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/glibc-2.34/build/libc-modules.h \
+ ../include/libc-symbols.h \
+ /home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/glibc-2.34/build/config.h \
+ ../sysdeps/generic/libc-symver.h ../sysdeps/generic/symbol-hacks.h
+
+../include/stdc-predef.h:
+
+/home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/glibc-2.34/build/libc-modules.h:
+
+../include/libc-symbols.h:
+
+/home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/glibc-2.34/build/config.h:
+
+../sysdeps/generic/libc-symver.h:
+
+../sysdeps/generic/symbol-hacks.h:

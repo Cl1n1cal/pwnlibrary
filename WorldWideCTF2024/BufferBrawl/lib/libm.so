@@ -1,0 +1,4 @@
+/* GNU ld script
+*/
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( /home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/lib/libm.so.6  AS_NEEDED ( /home/cl1nical/Desktop/pwnlibrary/WorldWideCTF2024/BufferBrawl/lib/libmvec.so.1 ) )
