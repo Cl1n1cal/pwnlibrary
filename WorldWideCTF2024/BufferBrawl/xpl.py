@@ -19,9 +19,9 @@ def start():
 
 # Addresses
 offset_can = 24
-libc_start_main_109 = 0x2d4ed
-one_offset = 0xda7c1
-pop_r12_pop_r13_ret = 0x9e2ef
+libc_start_main_109 = 0x2bffd
+one_offset = 0xd23e1 # ok
+pop_r12_pop_r13_ret = 0x9d74f # ok
 
 # Functions
 def uppercut():
