@@ -8,7 +8,7 @@ b main
 b *main+161
 '''
 
-context.update(arch='amd64',os='linux')
+context.update(arch='amd64',os='linux') # Needed for shellcode to work
 
 def start():
     if args.GDB:
