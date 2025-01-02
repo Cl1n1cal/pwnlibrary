@@ -1,0 +1,25 @@
+#!/bin/sh
+# devtmpfs does not get automounted for initramfs
+/bin/mount -t proc proc /proc
+/bin/mount -t sysfs sysfs /sys
+/bin/mount -t devtmpfs devtmpfs /dev
+/sbin/mdev -s
+
+# chmod 400 -R /flag
+insmod /root/chall.ko
+chmod 666 /dev/oneshot
+chmod 777 /tmp
+
+echo 1 > /proc/sys/kernel/kptr_restrict
+echo 1 > /proc/sys/kernel/perf_event_paranoid
+echo 1 > /proc/sys/kernel/dmesg_restrict
+
+
+cat /root/banner
+echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
+
+setsid /bin/cttyhack setuidgid 1000 /bin/sh
+
+umount /proc
+umount /sys
+poweroff -d 0 -f
