@@ -1,5 +1,8 @@
 #!/bin/sh
-musl-gcc exploit.c -o exploit -static
+musl-gcc exploit.c -o exploit -static -fno-stack-protector
+if [ $? -ne 0 ]; then
+	exit 1
+fi
 mv exploit root
 cd root; find . -print0 | cpio -o --null --format=newc --owner=root > ../debugfs.cpio
 cd ../
