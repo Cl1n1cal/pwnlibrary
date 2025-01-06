@@ -1,0 +1,8 @@
+- Allocate chunk with size 0x1000 and free it (lets call the method of freeing org_free)
+- Allocate msg_msg and free using org_free
+- Allocate msg_msgseg in same place
+- Do msg_copy for original msg_msg
+- Message copy causes the security field written to be the next pointer in msg_msg list
+- Leak the security field using msg_copy on msg_msgseg
+- The security field can give physbase which can be used to leak physbase + 0x9d000 (contains rip pointer as this physical address contains the kaslr code)
+- Arb free can be achieved using the next field or the security field
