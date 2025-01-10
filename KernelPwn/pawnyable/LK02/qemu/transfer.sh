@@ -1,5 +1,5 @@
 #!/bin/sh
-musl-gcc exploit.c -o exploit -static -fno-stack-protector
+musl-gcc exploit.c -o exploit -static -fno-stack-protector -fcf-protection=none
 if [ $? -ne 0 ]; then
 	exit 1
 fi
@@ -11,7 +11,7 @@ qemu-system-x86_64 \
     -m 64M \
     -nographic \
     -kernel bzImage \
-    -append "console=ttyS0 loglevel=3 oops=panic panic=-1 pti=on nokaslr" \
+    -append "console=ttyS0 loglevel=3 oops=panic panic=-1 pti=on kaslr" \
     -no-reboot \
     -cpu kvm64,+smep,+smap \
     -gdb tcp::12345 \
